@@ -89,7 +89,11 @@ class Save extends Banner
             $banner = $this->initBanner();
 
             if (Type::IMAGE === $data['type']) {
-                $this->imageHelper->uploadImage($data, 'image', Image::TEMPLATE_MEDIA_TYPE_BANNER, $banner->getImage());
+                try {
+                    $this->imageHelper->uploadImage($data, 'image', Image::TEMPLATE_MEDIA_TYPE_BANNER, $banner->getImage());
+                } catch (Exception $e) {
+                    $data['image'] = isset($data['image']['value']) ? $data['image']['value'] : '';
+                }
             }
 
             $data['sliders_ids'] = (isset($data['sliders_ids']) && $data['sliders_ids'])
